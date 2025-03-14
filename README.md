@@ -72,7 +72,3 @@ To add new output formats or customize behavior, modify the `saveas_*` functions
 
 ## License
 This project is licensed under the MIT License.
-
-## Author
-Data Conversion Laboratory © 2023
-
