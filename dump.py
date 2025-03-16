@@ -309,7 +309,7 @@ def saveas_xml(doc, out_file):
 
 def saveas(out_type, doc, out_file):
     if out_type == "text":
-        saveas_txt(doc, out_file)
+        saveas_text(doc, out_file)
 
     if out_type == "html":
         saveas_html(doc, out_file)
@@ -370,7 +370,7 @@ def main(args):
             logger.error(f"Failed nlp: {err}, skipping...")
             continue
 
-        saveas(format=params.output_type, doc=doc, out_file=out_file)
+        saveas(out_type=params.output_type, doc=doc, out_file=out_file)
 
         if Path(out_file).exists():
             logger.info(out_file.resolve())
