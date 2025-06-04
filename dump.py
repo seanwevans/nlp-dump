@@ -416,6 +416,7 @@ def process_file(
     output_type: str,
     entity_types: List[str],
     skip_existing: bool = False,
+    out_dir: Path = Path("."),
 ) -> bool:
     """
     Process a single file with SpaCy.
@@ -426,15 +427,30 @@ def process_file(
         output_type: Output format
         entity_types: Entity types to include
         skip_existing: Skip if output file exists
+        out_dir: Directory to write output files
 
     Returns:
         Success status
     """
-    out_file = file_path.with_suffix(f".{output_type}")
+    out_file = out_dir / file_path.with_suffix(f".{output_type}").name
 
-    if skip_existing and out_file.exists():
-        logger.debug("Skipping existing file: %s", out_file)
-        return True
+    if output_type == "enterprise":
+        xml_file = out_dir / file_path.with_suffix(".xml").name
+        html_file = out_dir / file_path.with_suffix(".html").name
+        json_file = out_dir / file_path.with_suffix(".json").name
+
+        if skip_existing and xml_file.exists() and html_file.exists() and json_file.exists():
+            logger.debug(
+                "Skipping existing enterprise files: %s, %s, %s",
+                xml_file,
+                html_file,
+                json_file,
+            )
+            return True
+    else:
+        if skip_existing and out_file.exists():
+            logger.debug("Skipping existing file: %s", out_file)
+            return True
 
     try:
         try:
@@ -519,7 +535,12 @@ def main(args: List[str]) -> None:
         )
 
         if process_file(
-            file_path, nlp, params.output_type, params.entities, params.skip
+            file_path,
+            nlp,
+            params.output_type,
+            params.entities,
+            params.skip,
+            params.out,
         ):
             success_count += 1
             logger.info("Successfully processed %s", file_path.name)
