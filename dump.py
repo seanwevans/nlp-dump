@@ -13,12 +13,11 @@ import logging
 from glob import glob
 from pathlib import Path
 import pickle
-import os
 import re
 import sys
 from time import process_time
 import unicodedata
-from typing import List, Dict, Any, Optional, Union, Set
+from typing import List, Dict, Optional
 
 from lxml import etree as ET
 import numpy
