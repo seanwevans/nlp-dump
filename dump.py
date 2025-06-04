@@ -204,8 +204,7 @@ def get_token_attributes(token: spacy.tokens.token.Token) -> Dict[str, str]:
         ):
             continue
 
-        m = f"token.{method}"
-        to_examine = eval(m)
+        to_examine = getattr(token, method)
 
         if str(type(to_examine)) == "<class 'builtin_function_or_method'>":
             continue
