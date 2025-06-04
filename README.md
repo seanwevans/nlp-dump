@@ -45,6 +45,11 @@ git clone https://github.com/seanwevans/nlp-dump.git
 cd nlp-dump
 ```
 
+Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
 ## Usage
 
 Run the script from the command line to process text files:
@@ -199,4 +204,4 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.

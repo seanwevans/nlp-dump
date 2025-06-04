@@ -13,12 +13,11 @@ import logging
 from glob import glob
 from pathlib import Path
 import pickle
-import os
 import re
 import sys
 from time import process_time
 import unicodedata
-from typing import List, Dict, Any, Optional, Union, Set
+from typing import List, Dict, Optional
 
 from lxml import etree as ET
 import numpy
@@ -204,8 +203,7 @@ def get_token_attributes(token: spacy.tokens.token.Token) -> Dict[str, str]:
         ):
             continue
 
-        m = f"token.{method}"
-        to_examine = eval(m)
+        to_examine = getattr(token, method)
 
         if str(type(to_examine)) == "<class 'builtin_function_or_method'>":
             continue
@@ -412,6 +410,7 @@ def saveas(
 
 def process_file(
     file_path: Path,
+    out_dir: Path,
     nlp: spacy.language.Language,
     output_type: str,
     entity_types: List[str],
@@ -423,6 +422,7 @@ def process_file(
 
     Args:
         file_path: Path to input file
+        out_dir: Directory for output
         nlp: Loaded SpaCy model
         output_type: Output format
         entity_types: Entity types to include
@@ -451,7 +451,6 @@ def process_file(
         if skip_existing and out_file.exists():
             logger.debug("Skipping existing file: %s", out_file)
             return True
-
     try:
         try:
             with open(file_path, "r", encoding="UTF-8") as f:
@@ -536,14 +535,19 @@ def main(args: List[str]) -> None:
 
         if process_file(
             file_path,
+            params.out,
             nlp,
             params.output_type,
             params.entities,
             params.skip,
             params.out,
+
         ):
             success_count += 1
-            logger.info("Successfully processed %s", file_path.name)
+            logger.info(
+                "Successfully processed %s",
+                params.out / file_path.with_suffix(f".{params.output_type}").name,
+            )
 
     logger.info(
         "Processing complete: %d/%d files successfully processed",
