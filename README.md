@@ -45,6 +45,11 @@ git clone https://github.com/seanwevans/nlp-dump.git
 cd nlp-dump
 ```
 
+Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
 ## Usage
 
 Run the script from the command line to process text files:
