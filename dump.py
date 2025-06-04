@@ -412,6 +412,7 @@ def saveas(
 
 def process_file(
     file_path: Path,
+    out_dir: Path,
     nlp: spacy.language.Language,
     output_type: str,
     entity_types: List[str],
@@ -422,6 +423,7 @@ def process_file(
 
     Args:
         file_path: Path to input file
+        out_dir: Directory for output
         nlp: Loaded SpaCy model
         output_type: Output format
         entity_types: Entity types to include
@@ -430,7 +432,8 @@ def process_file(
     Returns:
         Success status
     """
-    out_file = file_path.with_suffix(f".{output_type}")
+    out_dir.mkdir(parents=True, exist_ok=True)
+    out_file = out_dir / file_path.with_suffix(f".{output_type}").name
 
     if skip_existing and out_file.exists():
         logger.debug("Skipping existing file: %s", out_file)
@@ -519,10 +522,18 @@ def main(args: List[str]) -> None:
         )
 
         if process_file(
-            file_path, nlp, params.output_type, params.entities, params.skip
+            file_path,
+            params.out,
+            nlp,
+            params.output_type,
+            params.entities,
+            params.skip,
         ):
             success_count += 1
-            logger.info("Successfully processed %s", file_path.name)
+            logger.info(
+                "Successfully processed %s",
+                params.out / file_path.with_suffix(f".{params.output_type}").name,
+            )
 
     logger.info(
         "Processing complete: %d/%d files successfully processed",
