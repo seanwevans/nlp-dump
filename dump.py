@@ -415,7 +415,6 @@ def process_file(
     output_type: str,
     entity_types: List[str],
     skip_existing: bool = False,
-    out_dir: Path = Path("."),
 ) -> bool:
     """
     Process a single file with SpaCy.
@@ -427,7 +426,6 @@ def process_file(
         output_type: Output format
         entity_types: Entity types to include
         skip_existing: Skip if output file exists
-        out_dir: Directory to write output files
 
     Returns:
         Success status
@@ -540,7 +538,6 @@ def main(args: List[str]) -> None:
             params.output_type,
             params.entities,
             params.skip,
-            params.out,
 
         ):
             success_count += 1
