@@ -276,7 +276,7 @@ def saveas_html(
 
     html = displacy.render(doc, style="ent", options=options, page=True)
 
-    html = re.sub(r"(?:</br>\s*){2,}", "</br> ", html)
+    html = re.sub(r'(?:<br>\s*){2,}', '<br> ', html)
 
     with open(str(out_file), "w", encoding="UTF-8") as g:
         g.write(html)
@@ -410,7 +410,6 @@ def saveas(
 
 def process_file(
     file_path: Path,
-    out_dir: Path,
     nlp: spacy.language.Language,
     output_type: str,
     entity_types: List[str],
@@ -422,7 +421,6 @@ def process_file(
 
     Args:
         file_path: Path to input file
-        out_dir: Directory for output
         nlp: Loaded SpaCy model
         output_type: Output format
         entity_types: Entity types to include
