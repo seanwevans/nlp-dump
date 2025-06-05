@@ -25,7 +25,7 @@ and pickle, allowing for easy text analysis, visualization, and serialization.
 You can install the required dependencies with:
 
 ```bash
-pip install spacy lxml numpy
+pip install -r requirements.txt
 ```
 
 You'll also need to download at least one SpaCy model:
