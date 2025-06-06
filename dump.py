@@ -426,7 +426,6 @@ def process_file(
         output_type: Output format
         entity_types: Entity types to include
         skip_existing: Skip if output file exists
-        out_dir: Directory to write output files
 
     Returns:
         Success status
