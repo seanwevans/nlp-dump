@@ -538,7 +538,6 @@ def main(args: List[str]) -> None:
             params.output_type,
             params.entities,
             params.skip,
-
         ):
             success_count += 1
             logger.info(
