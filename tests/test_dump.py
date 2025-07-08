@@ -17,6 +17,7 @@ def test_parse_args_defaults():
     assert args.skip is False
     assert args.entities == dump.DEFAULT_ENTITY_TYPES
     assert args.dry_run is False
+    assert args.char_limit == dump.SPACY_CHAR_LIM
 
 
 def test_parse_args_options():
@@ -32,6 +33,8 @@ def test_parse_args_options():
         "PERSON",
         "ORG",
         "--dry-run",
+        "--char-limit",
+        "123",
     ])
     assert args.input_glob == ["in.md"]
     assert args.output_type == "html"
@@ -40,6 +43,7 @@ def test_parse_args_options():
     assert args.skip is True
     assert args.entities == ["PERSON", "ORG"]
     assert args.dry_run is True
+    assert args.char_limit == 123
 
 
 def test_main_process_file_called(monkeypatch, tmp_path):
@@ -51,15 +55,15 @@ def test_main_process_file_called(monkeypatch, tmp_path):
 
     calls = []
 
-    def fake_process_file(file_path, out_dir_arg, nlp, output_type, entity_types, skip_existing):
-        calls.append((file_path, out_dir_arg, output_type, tuple(entity_types), skip_existing))
+    def fake_process_file(file_path, out_dir_arg, nlp, output_type, entity_types, skip_existing, char_limit):
+        calls.append((file_path, out_dir_arg, output_type, tuple(entity_types), skip_existing, char_limit))
         return True
 
     monkeypatch.setattr(dump, "process_file", fake_process_file)
     monkeypatch.setattr(dump.spacy, "load", lambda m: spacy.blank("en"))
     monkeypatch.setattr(dump, "initialize_logs", lambda *a, **k: None)
 
-    dump.main([str(tmp_path / "*.txt"), "json", "-o", str(out_dir), "-s"])
+    dump.main([str(tmp_path / "*.txt"), "json", "-o", str(out_dir), "-s", "--char-limit", "42"])
 
     assert len(calls) == 2
     assert calls[0][0].name == "a.txt"
@@ -69,3 +73,4 @@ def test_main_process_file_called(monkeypatch, tmp_path):
         assert call[2] == "json"
         assert call[3] == tuple(dump.DEFAULT_ENTITY_TYPES)
         assert call[4] is True
+        assert call[5] == 42

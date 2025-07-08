@@ -70,6 +70,7 @@ python dump.py [options] [input_glob(s)] [output_type]
 - `-s, --skip`: Skip files which have already been processed (i.e. their specified output already exists)
 - `-e, --entities`: Specify which entity types to include (space-separated list)
 - `-d, --dry-run`: Show files to be processed without actually processing them
+- `--char-limit`: Maximum number of characters to process from each file (default: 1000000)
 - `--version`: Display the version information
 - `--help`: Show help message and exit
 
@@ -98,6 +99,11 @@ python dump.py "./news/*.txt" html -e PERSON ORG GPE DATE
 Preview which files would be processed:
 ```bash
 python dump.py "./data/**/*.txt" xml -d
+```
+
+Limit the number of characters processed:
+```bash
+python dump.py "./long_docs/*.txt" json --char-limit 500000
 ```
 
 ## Output Formats
