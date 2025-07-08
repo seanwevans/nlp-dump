@@ -117,6 +117,13 @@ def parse_args(args: List[str]) -> argparse.Namespace:
     )
 
     argp.add_argument(
+        "--char-limit",
+        type=int,
+        default=SPACY_CHAR_LIM,
+        help="Maximum number of characters to process per document",
+    )
+
+    argp.add_argument(
         "--version",
         action="version",
         version=f"{PROG} v{VERSION}",
@@ -415,6 +422,7 @@ def process_file(
     output_type: str,
     entity_types: List[str],
     skip_existing: bool = False,
+    char_limit: int = SPACY_CHAR_LIM,
 ) -> bool:
     """
     Process a single file with SpaCy.
@@ -426,6 +434,7 @@ def process_file(
         output_type: Output format
         entity_types: Entity types to include
         skip_existing: Skip if output file exists
+        char_limit: Maximum characters from the file to process
 
     Returns:
         Success status
@@ -461,7 +470,7 @@ def process_file(
                 with open(file_path, "r", encoding="latin-1") as f:
                     doc_text = f.read()
 
-        doc = nlp(doc_text[:SPACY_CHAR_LIM])
+        doc = nlp(doc_text[:char_limit])
         saveas(
             output_type=output_type,
             doc=doc,
@@ -538,6 +547,7 @@ def main(args: List[str]) -> None:
             params.output_type,
             params.entities,
             params.skip,
+            params.char_limit,
         ):
             success_count += 1
             logger.info(
