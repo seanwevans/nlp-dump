@@ -1,4 +1,5 @@
 # SpaCy Dump Tool
+<img width="256" alt="Dumps like a truck" src="https://github.com/user-attachments/assets/e109475d-5c89-4213-84cb-03cb89a8d34a" />
 
 `dump.py` is a powerful command-line tool designed to process text files using 
 SpaCy, a leading Natural Language Processing library. This script extracts and
